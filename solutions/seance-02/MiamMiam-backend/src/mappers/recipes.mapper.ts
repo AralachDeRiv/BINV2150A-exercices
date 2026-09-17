@@ -90,18 +90,22 @@ export class RecipesMapper {
   }
 
   static fromUpdatedRecipeDTO(dto: UpdatedRecipeDTO): UpdatedRecipe {
-    return {
-      title: dto.title,
-      imageUrl: dto.imageUrl,
-      prepTime: dto.prepTime,
-      cookTime: dto.cookTime,
-      servings: dto.servings,
-      difficulty: dto.difficulty,
-      categoryId: dto.categoryId,
-      tags: dto.tags,
-      ingredients: dto.ingredients,
-      steps: dto.steps,
-      authorId: dto.authorId,
-    };
+    let updatedRecipe: UpdatedRecipe = {};
+
+    // L'objectif ici est de filtrer les champs possiblement undefined
+    // L'utilisation de Object.keys() dans ce cas ne semble pas permis par TS pour redéfinir les attributs de updatedRecipe
+    if (dto.title) updatedRecipe.title = dto.title;
+    if (dto.description) updatedRecipe.description = dto.description;
+    if (dto.prepTime) updatedRecipe.prepTime = dto.prepTime;
+    if (dto.cookTime) updatedRecipe.cookTime = dto.cookTime;
+    if (dto.servings) updatedRecipe.servings = dto.servings;
+    if (dto.difficulty) updatedRecipe.difficulty = dto.difficulty;
+    if (dto.categoryId) updatedRecipe.categoryId = dto.categoryId;
+    if (dto.tags) updatedRecipe.tags = dto.tags;
+    if (dto.ingredients) updatedRecipe.ingredients = dto.ingredients;
+    if (dto.steps) updatedRecipe.steps = dto.steps;
+    if (dto.authorId) updatedRecipe.authorId = dto.authorId;
+
+    return updatedRecipe;
   }
 }

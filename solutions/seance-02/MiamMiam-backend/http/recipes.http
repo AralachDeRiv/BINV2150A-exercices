@@ -155,7 +155,66 @@ Authorization: {{login.response.body.token}}
 DELETE {{server}}/recipes/{{createRecipe.response.body.id}}
 Authorization: {{login.response.body.token}}
 
+#### TEST pour PATCH 
 
-### 
-PATCH  {{server}}/recipes/1
-Authorization: {{login.response.body.token}}
+### Connexion (bob)
+# @name bobLogin
+POST {{server}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "bob@vinci.be",
+  "password": "bob"
+}
+
+
+### Créer une recette (bob)
+# @name createRecipeBob
+POST {{server}}/recipes
+Content-Type: application/json
+Authorization: {{bobLogin.response.body.token}}
+
+{
+  "title": "Une super recette !!!!!",
+  "description": "Le plat de dépannage par excellence.",
+  "prepTime": 5,
+  "cookTime": 5,
+  "servings": 1,
+  "difficulty": 1,
+  "categoryId": 2,
+  "tags": ["rapide", "végétarien"],
+  "ingredients": [
+    { "name": "oeuf", "quantity": 3, "unit": "pièce" },
+    { "name": "ciboulette", "quantity": 1, "unit": "c. à soupe" },
+    { "name": "beurre", "quantity": 10, "unit": "g" }
+  ],
+  "steps": [
+    "Battre les oeufs avec les herbes, saler, poivrer.",
+    "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
+    "Plier et servir baveuse."
+  ]
+}
+
+
+
+### Change le titre et la description d'une recette
+# recette modifée -> 200
+PATCH  {{server}}/recipes/{{createRecipeBob.response.body.id}}
+Content-Type: application/json
+Authorization: {{bobLogin.response.body.token}}
+
+{
+  "title": "Pas si ouf la recette",
+  "description" : "Une super description !"
+}
+
+### Tente de modifié un attribut non valide d'une recette
+# Bad Request -> 400
+PATCH  {{server}}/recipes/{{createRecipeBob.response.body.id}}
+Content-Type: application/json
+Authorization: {{bobLogin.response.body.token}}
+
+{
+  "title": "Pas si ouf la recette",
+  "wow" : "Une super description !"
+}

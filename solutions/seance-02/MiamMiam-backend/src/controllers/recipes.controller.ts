@@ -177,6 +177,7 @@ recipesController.patch(
     const user = req.user;
 
     const id = Number(req.params.id);
+
     if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
 
     const recipe = RecipesService.getById(id);
