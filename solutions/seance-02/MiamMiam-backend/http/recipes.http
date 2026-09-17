@@ -208,7 +208,7 @@ Authorization: {{bobLogin.response.body.token}}
   "description" : "Une super description !"
 }
 
-### Tente de modifié un attribut non valide d'une recette
+### Tente de modifier un attribut non valide d'une recette
 # Bad Request -> 400
 PATCH  {{server}}/recipes/{{createRecipeBob.response.body.id}}
 Content-Type: application/json
