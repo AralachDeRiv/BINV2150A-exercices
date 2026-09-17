@@ -1,4 +1,12 @@
-import { NewRecipe, NewRecipeDTO, Recipe, RecipeDBO, RecipeDTO } from "../models/recipe.model";
+import {
+  NewRecipe,
+  NewRecipeDTO,
+  Recipe,
+  RecipeDBO,
+  RecipeDTO,
+  UpdatedRecipe,
+  UpdatedRecipeDTO,
+} from "../models/recipe.model";
 
 export class RecipesMapper {
   static toDTO(recipe: Recipe): RecipeDTO {
@@ -78,6 +86,22 @@ export class RecipesMapper {
       authorId: dbo.author_id,
       createdAt: new Date(dbo.created_at),
       updatedAt: new Date(dbo.updated_at),
+    };
+  }
+
+  static fromUpdatedRecipeDTO(dto: UpdatedRecipeDTO): UpdatedRecipe {
+    return {
+      title: dto.title,
+      imageUrl: dto.imageUrl,
+      prepTime: dto.prepTime,
+      cookTime: dto.cookTime,
+      servings: dto.servings,
+      difficulty: dto.difficulty,
+      categoryId: dto.categoryId,
+      tags: dto.tags,
+      ingredients: dto.ingredients,
+      steps: dto.steps,
+      authorId: dto.authorId,
     };
   }
 }
