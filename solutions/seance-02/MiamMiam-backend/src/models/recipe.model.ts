@@ -94,3 +94,33 @@ export interface RecipeFilter {
   ingredient?: string; // nom d'ingrédient
   maxPrepTime?: number; // prepTime + cookTime <= maxPrepTime
 }
+
+export interface UpdatedRecipe {
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  prepTime?: number; // minutes
+  cookTime?: number; // minutes
+  servings?: number; // nombre de personnes
+  difficulty?: number; // 1 (facile) à 5 (difficile)
+  categoryId?: number;
+  tags?: string[];
+  ingredients?: Ingredient[];
+  steps?: string[];
+  authorId?: number;
+}
+
+export interface UpdatedRecipeDTO {
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  prepTime?: number;
+  cookTime?: number;
+  servings?: number;
+  difficulty?: number;
+  categoryId?: number;
+  tags?: string[];
+  ingredients?: Ingredient[];
+  steps?: string[];
+  authorId?: number;
+}
