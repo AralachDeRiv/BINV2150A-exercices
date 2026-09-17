@@ -7,7 +7,7 @@ import { AuthService } from "../services/auth.service";
 import { CategoriesService } from "../services/categories.service";
 import { LoggerService } from "../services/logger.service";
 import { RecipesService } from "../services/recipes.service";
-import { isNewRecipeDTO, isString } from "../utils/guards";
+import { isNewRecipeDTO, isString, isUpdatedRecipeDTO } from "../utils/guards";
 
 export const recipesController = Router();
 
@@ -173,6 +173,20 @@ recipesController.patch(
   "/:id",
   AuthService.authorize,
   (req: AuthenticatedRequest, res: Response) => {
+    if (!req.user) return res.sendStatus(401);
+    const user = req.user;
+
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+
+    const recipe = RecipesService.getById(id);
+    if (!recipe) return res.sendStatus(404);
+
+    if (user.id !== recipe.authorId && user.role !== ERole.ADMIN)
+      return res.sendStatus(403);
+
+    if (!isUpdatedRecipeDTO(req.body)) return res.sendStatus(400);
+
     res.sendStatus(200);
   },
 );

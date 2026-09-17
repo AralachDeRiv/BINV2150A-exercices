@@ -1,5 +1,11 @@
 import { RecipesMapper } from "../mappers/recipes.mapper";
-import { NewRecipe, Recipe, RecipeDBO, RecipeFilter } from "../models/recipe.model";
+import {
+  NewRecipe,
+  Recipe,
+  RecipeDBO,
+  RecipeFilter,
+  UpdatedRecipe,
+} from "../models/recipe.model";
 import { AbstractService } from "./abstract.service";
 import { UsersService } from "./users.service";
 
@@ -11,7 +17,10 @@ export class RecipesService extends AbstractService {
   }
 
   private static writeRecipesDB(recipes: Recipe[]): boolean {
-    return RecipesService.writeDB<Recipe, RecipeDBO>(recipes, RecipesMapper.toDBO);
+    return RecipesService.writeDB<Recipe, RecipeDBO>(
+      recipes,
+      RecipesMapper.toDBO,
+    );
   }
 
   /**
@@ -23,10 +32,16 @@ export class RecipesService extends AbstractService {
     const result: Recipe[] = [];
 
     for (const recipe of recipes) {
-      if (filter.categoryId !== undefined && recipe.categoryId !== filter.categoryId) {
+      if (
+        filter.categoryId !== undefined &&
+        recipe.categoryId !== filter.categoryId
+      ) {
         continue;
       }
-      if (filter.authorId !== undefined && recipe.authorId !== filter.authorId) {
+      if (
+        filter.authorId !== undefined &&
+        recipe.authorId !== filter.authorId
+      ) {
         continue;
       }
       if (filter.search !== undefined) {
@@ -49,7 +64,10 @@ export class RecipesService extends AbstractService {
           continue;
         }
       }
-      if (filter.maxPrepTime !== undefined && recipe.prepTime + recipe.cookTime > filter.maxPrepTime) {
+      if (
+        filter.maxPrepTime !== undefined &&
+        recipe.prepTime + recipe.cookTime > filter.maxPrepTime
+      ) {
         continue;
       }
       result.push(recipe);
@@ -150,6 +168,30 @@ export class RecipesService extends AbstractService {
       return undefined;
     }
     return recipe;
+  }
+
+  /**
+   * Remplace certains attributs d'une recette existante (l'id, l'auteur et la date de création sont conservés).
+   * @returns la recette mise à jour, ou undefined si elle n'existe pas
+   */
+  static partialUpdate(id: number, updates: UpdatedRecipe): Recipe | undefined {
+    const recipes = this.readRecipesDB();
+    const index = recipes.findIndex((recipe) => recipe.id === id);
+    if (index === -1) return undefined;
+
+    const updatedRecipe: Recipe = {
+      ...recipes[index],
+      ...updates,
+      updatedAt: new Date(),
+    };
+
+    recipes[index] = updatedRecipe;
+
+    if (!this.writeRecipesDB(recipes)) {
+      return undefined;
+    }
+
+    return updatedRecipe;
   }
 
   /**
