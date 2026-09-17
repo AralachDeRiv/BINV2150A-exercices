@@ -187,6 +187,13 @@ recipesController.patch(
 
     if (!isUpdatedRecipeDTO(req.body)) return res.sendStatus(400);
 
-    res.sendStatus(200);
+    const updatedRecipe = RecipesService.partialUpdate(
+      id,
+      RecipesMapper.fromUpdatedRecipeDTO(req.body),
+    );
+
+    if (!updatedRecipe) return res.sendStatus(500);
+
+    res.status(200).send(RecipesMapper.toDTO(updatedRecipe));
   },
 );
