@@ -89,6 +89,7 @@ export class RecipesMapper {
     };
   }
 
+  // MODIF
   static fromUpdatedRecipeDTO(dto: UpdatedRecipeDTO): UpdatedRecipe {
     let updatedRecipe: UpdatedRecipe = {};
 

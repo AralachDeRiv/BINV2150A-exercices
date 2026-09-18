@@ -170,6 +170,7 @@ export class RecipesService extends AbstractService {
     return recipe;
   }
 
+  // MODIF
   /**
    * Remplace certains attributs d'une recette existante (l'id, l'auteur et la date de création sont conservés).
    * @returns la recette mise à jour, ou undefined si elle n'existe pas

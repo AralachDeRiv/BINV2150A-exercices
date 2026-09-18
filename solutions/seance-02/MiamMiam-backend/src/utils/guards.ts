@@ -68,6 +68,7 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   return true;
 }
 
+// MODIF
 export function isUpdatedRecipeDTO(obj: any): obj is UpdatedRecipeDTO {
   if (!isObject(obj)) return false;
   const recipe = obj as any;

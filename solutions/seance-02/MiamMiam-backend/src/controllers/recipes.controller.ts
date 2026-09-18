@@ -158,6 +158,7 @@ recipesController.delete(
   },
 );
 
+// MODIF
 /**
  * @route PATCH /recipes/:id
  * @summary Met à jour partiellement une recette (auteur ou admin uniquement)
