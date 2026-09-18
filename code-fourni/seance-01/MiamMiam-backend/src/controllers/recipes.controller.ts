@@ -38,15 +38,14 @@ recipesController.get("/", (req: Request, res: Response) => {
   }
   if (isString(req.query.maxPrepTime)) {
     const maxPrepTime = Number(req.query.maxPrepTime);
-    if (!Number.isInteger(maxPrepTime) || maxPrepTime < 0) return res.sendStatus(400);
+    if (!Number.isInteger(maxPrepTime) || maxPrepTime < 0)
+      return res.sendStatus(400);
     filter.maxPrepTime = maxPrepTime;
   }
 
   const recipes = RecipesService.getAll(filter);
-  const recipesDTO: RecipeDTO[] = [];
-  for (const recipe of recipes) {
-    recipesDTO.push(RecipesMapper.toDTO(recipe));
-  }
+  // MODIF
+  const recipesDTO: RecipeDTO[] = recipes.map((re) => RecipesMapper.toDTO(re));
   return res.status(200).json(recipesDTO);
 });
 
@@ -70,72 +69,89 @@ recipesController.get("/:id", (req: Request, res: Response) => {
  * POST /recipes
  * Crée une recette (utilisateur connecté = auteur)
  */
-recipesController.post("/", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
-  LoggerService.info("[POST] /recipes");
+recipesController.post(
+  "/",
+  AuthService.authorize,
+  (req: AuthenticatedRequest, res: Response) => {
+    LoggerService.info("[POST] /recipes");
 
-  if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+    if (!req.user) return res.sendStatus(401);
+    const user = req.user;
 
-  const body: unknown = req.body;
-  if (!isNewRecipeDTO(body)) return res.sendStatus(400);
+    const body: unknown = req.body;
+    if (!isNewRecipeDTO(body)) return res.sendStatus(400);
 
-  if (!CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
+    if (!CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
 
-  const newRecipe = RecipesMapper.fromNewDTO(body, user.id);
-  const recipe = RecipesService.create(newRecipe);
-  if (!recipe) return res.sendStatus(500);
+    const newRecipe = RecipesMapper.fromNewDTO(body, user.id);
+    const recipe = RecipesService.create(newRecipe);
+    if (!recipe) return res.sendStatus(500);
 
-  return res.status(201).json(RecipesMapper.toDTO(recipe));
-});
+    return res.status(201).json(RecipesMapper.toDTO(recipe));
+  },
+);
 
 /**
  * PUT /recipes/:id
  * Remplace une recette (auteur ou admin uniquement)
  */
-recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
-  LoggerService.info("[PUT] /recipes/:id");
+recipesController.put(
+  "/:id",
+  AuthService.authorize,
+  (req: AuthenticatedRequest, res: Response) => {
+    LoggerService.info("[PUT] /recipes/:id");
 
-  if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+    if (!req.user) return res.sendStatus(401);
+    const user = req.user;
 
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
 
-  const body: unknown = req.body;
-  if (!isNewRecipeDTO(body)) return res.sendStatus(400);
+    const body: unknown = req.body;
+    if (!isNewRecipeDTO(body)) return res.sendStatus(400);
 
-  const recipe = RecipesService.getById(id);
-  if (!recipe) return res.sendStatus(404);
+    const recipe = RecipesService.getById(id);
+    if (!recipe) return res.sendStatus(404);
 
-  if (recipe.authorId !== user.id && user.role !== ERole.ADMIN) return res.sendStatus(403);
+    if (recipe.authorId !== user.id && user.role !== ERole.ADMIN)
+      return res.sendStatus(403);
 
-  if (!CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
+    if (!CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
 
-  const updated = RecipesService.update(id, RecipesMapper.fromNewDTO(body, recipe.authorId));
-  if (!updated) return res.sendStatus(500);
+    const updated = RecipesService.update(
+      id,
+      RecipesMapper.fromNewDTO(body, recipe.authorId),
+    );
+    if (!updated) return res.sendStatus(500);
 
-  return res.sendStatus(204);
-});
+    return res.sendStatus(204);
+  },
+);
 
 /**
  * DELETE /recipes/:id
  * Supprime une recette (auteur ou admin uniquement)
  */
-recipesController.delete("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
-  LoggerService.info("[DELETE] /recipes/:id");
+recipesController.delete(
+  "/:id",
+  AuthService.authorize,
+  (req: AuthenticatedRequest, res: Response) => {
+    LoggerService.info("[DELETE] /recipes/:id");
 
-  if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+    if (!req.user) return res.sendStatus(401);
+    const user = req.user;
 
-  const id = Number(req.params.id);
-  if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
 
-  const recipe = RecipesService.getById(id);
-  if (!recipe) return res.sendStatus(404);
+    const recipe = RecipesService.getById(id);
+    if (!recipe) return res.sendStatus(404);
 
-  if (recipe.authorId !== user.id && user.role !== ERole.ADMIN) return res.sendStatus(403);
+    if (recipe.authorId !== user.id && user.role !== ERole.ADMIN)
+      return res.sendStatus(403);
 
-  if (!RecipesService.delete(id)) return res.sendStatus(500);
+    if (!RecipesService.delete(id)) return res.sendStatus(500);
 
-  return res.sendStatus(204);
-});
+    return res.sendStatus(204);
+  },
+);
