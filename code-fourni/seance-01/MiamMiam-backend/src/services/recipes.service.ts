@@ -1,10 +1,5 @@
 import { RecipesMapper } from "../mappers/recipes.mapper";
-import {
-  NewRecipe,
-  Recipe,
-  RecipeDBO,
-  RecipeFilter,
-} from "../models/recipe.model";
+import { NewRecipe, Recipe, RecipeDBO, RecipeFilter } from "../models/recipe.model";
 import { AbstractService } from "./abstract.service";
 import { UsersService } from "./users.service";
 
@@ -16,10 +11,7 @@ export class RecipesService extends AbstractService {
   }
 
   private static writeRecipesDB(recipes: Recipe[]): boolean {
-    return RecipesService.writeDB<Recipe, RecipeDBO>(
-      recipes,
-      RecipesMapper.toDBO,
-    );
+    return RecipesService.writeDB<Recipe, RecipeDBO>(recipes, RecipesMapper.toDBO);
   }
 
   /**
@@ -31,16 +23,10 @@ export class RecipesService extends AbstractService {
     const result: Recipe[] = [];
 
     for (const recipe of recipes) {
-      if (
-        filter.categoryId !== undefined &&
-        recipe.categoryId !== filter.categoryId
-      ) {
+      if (filter.categoryId !== undefined && recipe.categoryId !== filter.categoryId) {
         continue;
       }
-      if (
-        filter.authorId !== undefined &&
-        recipe.authorId !== filter.authorId
-      ) {
+      if (filter.authorId !== undefined && recipe.authorId !== filter.authorId) {
         continue;
       }
       if (filter.search !== undefined) {
@@ -63,10 +49,7 @@ export class RecipesService extends AbstractService {
           continue;
         }
       }
-      if (
-        filter.maxPrepTime !== undefined &&
-        recipe.prepTime + recipe.cookTime > filter.maxPrepTime
-      ) {
+      if (filter.maxPrepTime !== undefined && recipe.prepTime + recipe.cookTime > filter.maxPrepTime) {
         continue;
       }
       result.push(recipe);
@@ -79,16 +62,27 @@ export class RecipesService extends AbstractService {
    * Une recette par son id, ou undefined si elle n'existe pas
    */
   static getById(id: number): Recipe | undefined {
-    // MODIF
-    return this.readRecipesDB().find((re) => re.id === id);
+    const recipes = this.readRecipesDB();
+    for (const recipe of recipes) {
+      if (recipe.id === id) {
+        return recipe;
+      }
+    }
+    return undefined;
   }
 
   /**
    * Les recettes dont les ids sont fournis (ex : favoris d'un utilisateur)
    */
   static getByIds(ids: number[]): Recipe[] {
-    // MODIF
-    return this.readRecipesDB().filter((re) => ids.includes(re.id));
+    const recipes = this.readRecipesDB();
+    const result: Recipe[] = [];
+    for (const recipe of recipes) {
+      if (ids.includes(recipe.id)) {
+        result.push(recipe);
+      }
+    }
+    return result;
   }
 
   /**

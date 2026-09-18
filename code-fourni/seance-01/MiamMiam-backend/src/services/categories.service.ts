@@ -6,9 +6,7 @@ export class CategoriesService extends AbstractService {
   protected static dbPath: string = "data/categories.json";
 
   private static readCategoriesDB(): Category[] {
-    return CategoriesService.readDB<CategoryDBO, Category>(
-      CategoriesMapper.fromDBO,
-    );
+    return CategoriesService.readDB<CategoryDBO, Category>(CategoriesMapper.fromDBO);
   }
 
   /**
@@ -22,7 +20,12 @@ export class CategoriesService extends AbstractService {
    * Une catégorie par son id, ou undefined si elle n'existe pas
    */
   static getById(id: number): Category | undefined {
-    // MODIF
-    return this.readCategoriesDB().find((cat) => cat.id === id);
+    const categories = this.readCategoriesDB();
+    for (const category of categories) {
+      if (category.id === id) {
+        return category;
+      }
+    }
+    return undefined;
   }
 }

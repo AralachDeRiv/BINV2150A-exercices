@@ -16,16 +16,18 @@ export abstract class AbstractService {
       LoggerService.error(error);
       return [];
     }
-    // MODIF
-    return dbos.map((d) => mapper(d));
+    const items: OutT[] = [];
+    for (const dbo of dbos) {
+      items.push(mapper(dbo));
+    }
+    return items;
   }
 
-  protected static writeDB<From, ToWrite>(
-    items: From[],
-    mapper: (item: From) => ToWrite,
-  ): boolean {
-    // MODIF
-    const dbos: ToWrite[] = items.map((i) => mapper(i));
+  protected static writeDB<From, ToWrite>(items: From[], mapper: (item: From) => ToWrite): boolean {
+    const dbos: ToWrite[] = [];
+    for (const item of items) {
+      dbos.push(mapper(item));
+    }
     try {
       FilesService.writeFile<ToWrite>(this.dbPath, dbos);
     } catch (error) {
@@ -37,7 +39,12 @@ export abstract class AbstractService {
 
   /** Prochain id disponible (les ids commencent à 1) */
   protected static getNextId(items: { id: number }[]): number {
-    // MODIF
-    return items.reduce((max, item) => Math.max(max, item.id), 1);
+    let max = 0;
+    for (const item of items) {
+      if (item.id > max) {
+        max = item.id;
+      }
+    }
+    return max + 1;
   }
 }
