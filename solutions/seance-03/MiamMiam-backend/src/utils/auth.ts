@@ -1,3 +1,5 @@
+import * as jwt from "jsonwebtoken";
+
 /**
  * "Fake token" : un simple encodage Base64 de l'email de l'utilisateur.
  *
@@ -14,3 +16,8 @@ export const generateFakeToken = (email: string): string => {
 export const validateFakeToken = (token: string): string => {
   return Buffer.from(token, "base64").toString("utf-8");
 };
+
+/**
+ *
+ *
+ */
