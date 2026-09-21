@@ -16,7 +16,9 @@ export abstract class AbstractService {
       LoggerService.error(error);
       return [];
     }
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return dbos.map((d) => mapper(d));
   }
 
@@ -24,7 +26,9 @@ export abstract class AbstractService {
     items: From[],
     mapper: (item: From) => ToWrite,
   ): boolean {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     const dbos: ToWrite[] = items.map((i) => mapper(i));
     try {
       FilesService.writeFile<ToWrite>(this.dbPath, dbos);
@@ -37,7 +41,9 @@ export abstract class AbstractService {
 
   /** Prochain id disponible (les ids commencent à 1) */
   protected static getNextId(items: { id: number }[]): number {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return items.reduce((max, item) => Math.max(max, item.id), 1);
   }
 }

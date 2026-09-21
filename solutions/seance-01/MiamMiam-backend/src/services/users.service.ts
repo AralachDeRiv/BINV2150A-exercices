@@ -25,7 +25,9 @@ export class UsersService extends AbstractService {
    * Un utilisateur par son id, ou undefined s'il n'existe pas
    */
   static getById(id: number): User | undefined {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return this.readUsersDB().find((u) => u.id === id);
   }
 
@@ -33,7 +35,9 @@ export class UsersService extends AbstractService {
    * Un utilisateur par son email (insensible à la casse), ou undefined s'il n'existe pas
    */
   static getByEmail(email: string): User | undefined {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return this.readUsersDB().find(
       (u) => u.email.toLowerCase() === email.toLowerCase(),
     );
