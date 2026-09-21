@@ -44,7 +44,9 @@ recipesController.get("/", (req: Request, res: Response) => {
   }
 
   const recipes = RecipesService.getAll(filter);
-  // MODIF
+  /*************************************/
+  /*       Solution Seance 01          */
+  /*************************************/
   const recipesDTO: RecipeDTO[] = recipes.map((re) => RecipesMapper.toDTO(re));
   return res.status(200).json(recipesDTO);
 });

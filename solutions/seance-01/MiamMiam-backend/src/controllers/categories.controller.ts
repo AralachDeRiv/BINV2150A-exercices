@@ -14,7 +14,9 @@ categoriesController.get("/", (req: Request, res: Response) => {
   LoggerService.info("[GET] /categories");
 
   const categories = CategoriesService.getAll();
-  // MODIF
+  /*************************************/
+  /*       Solution Seance 01          */
+  /*************************************/
   const categoriesDTO: CategoryDTO[] = categories.map((cat) =>
     CategoriesMapper.toDTO(cat),
   );

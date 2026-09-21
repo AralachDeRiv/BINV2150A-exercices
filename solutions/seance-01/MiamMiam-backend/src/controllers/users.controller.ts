@@ -23,7 +23,9 @@ usersController.get(
     LoggerService.info("[GET] /users");
 
     const users = UsersService.getAll();
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     const usersDTO: UserDTO[] = users.map((u) => UsersMapper.toDTO(u));
     return res.status(200).json(usersDTO);
   },
@@ -45,7 +47,9 @@ usersController.get(
     const user = req.user;
 
     const recipes = RecipesService.getByIds(user.favorites);
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     const recipesDTO: RecipeDTO[] = recipes.map((re) =>
       RecipesMapper.toDTO(re),
     );

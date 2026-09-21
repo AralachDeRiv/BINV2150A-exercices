@@ -79,7 +79,9 @@ export class RecipesService extends AbstractService {
    * Une recette par son id, ou undefined si elle n'existe pas
    */
   static getById(id: number): Recipe | undefined {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return this.readRecipesDB().find((re) => re.id === id);
   }
 
@@ -87,7 +89,9 @@ export class RecipesService extends AbstractService {
    * Les recettes dont les ids sont fournis (ex : favoris d'un utilisateur)
    */
   static getByIds(ids: number[]): Recipe[] {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return this.readRecipesDB().filter((re) => ids.includes(re.id));
   }
 
@@ -164,11 +168,11 @@ export class RecipesService extends AbstractService {
    */
   static delete(id: number): boolean {
     const recipes = this.readRecipesDB();
-    const index = recipes.findIndex((recipe) => recipe.id === id);
-    if (index === -1) return false;
-
-    recipes.splice(index, 1);
-    if (!this.writeRecipesDB(recipes)) return false;
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
+    if (!recipes.some((r) => r.id === id)) return false;
+    if (!this.writeRecipesDB(recipes.filter((r) => r.id === id))) return false;
 
     UsersService.removeFavoriteForAll(id);
     return true;

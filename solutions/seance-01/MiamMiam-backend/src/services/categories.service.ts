@@ -22,7 +22,9 @@ export class CategoriesService extends AbstractService {
    * Une catégorie par son id, ou undefined si elle n'existe pas
    */
   static getById(id: number): Category | undefined {
-    // MODIF
+    /*************************************/
+    /*       Solution Seance 01          */
+    /*************************************/
     return this.readCategoriesDB().find((cat) => cat.id === id);
   }
 }
