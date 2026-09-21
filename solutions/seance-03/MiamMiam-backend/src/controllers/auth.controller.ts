@@ -6,6 +6,7 @@ import { AuthService } from "../services/auth.service";
 import { LoggerService } from "../services/logger.service";
 import { UsersService } from "../services/users.service";
 import { isCredentialsDTO, isNewUserDTO } from "../utils/guards";
+import { generateToken } from "../utils/auth";
 
 export const authController = Router();
 
@@ -30,6 +31,7 @@ authController.post("/register", (req: Request, res: Response) => {
   return res.status(201).json(tokenDTO);
 });
 
+// MODIF
 /**
  * POST /auth/login
  * Vérifie les identifiants et renvoie un token
@@ -40,11 +42,16 @@ authController.post("/login", (req: Request, res: Response) => {
   const body: unknown = req.body;
   if (!isCredentialsDTO(body)) return res.sendStatus(400);
 
-  const email = body.email;
-  const password = body.password;
+  const { email, password } = body;
+  const user = UsersService.getByEmail(email);
 
-  const token = AuthService.login(email, password);
-  if (!token) return res.sendStatus(401);
+  if (!user || user.password !== password) return res.sendStatus(401);
+
+  const token = generateToken({
+    id: user.id,
+    email: user.email,
+    role: user.role,
+  });
 
   const tokenDTO: TokenDTO = { token: token };
   return res.status(200).json(tokenDTO);
@@ -54,12 +61,16 @@ authController.post("/login", (req: Request, res: Response) => {
  * GET /auth/me
  * Renvoie l'utilisateur correspondant au token
  */
-authController.get("/me", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
-  LoggerService.info("[GET] /auth/me");
+authController.get(
+  "/me",
+  AuthService.authorize,
+  (req: AuthenticatedRequest, res: Response) => {
+    LoggerService.info("[GET] /auth/me");
 
-  if (!req.user) return res.sendStatus(401);
-  const user = req.user;
-
-  const userDTO: UserDTO = UsersMapper.toDTO(user);
-  return res.status(200).json(userDTO);
-});
+    if (!req.user) return res.sendStatus(401);
+    const user = req.user;
+    // MODIF
+    const userDTO: UserDTO = UsersMapper.toDTO(UsersService.getById(user.id)!);
+    return res.status(200).json(userDTO);
+  },
+);
