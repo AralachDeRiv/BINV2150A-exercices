@@ -1,3 +1,4 @@
+import { TokenPayload } from "../models/auth.model";
 import { NewRecipeDTO } from "../models/recipe.model";
 import { CredentialsDTO, NewUserDTO } from "../models/user.model";
 
@@ -55,10 +56,27 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   if (!isNumber(recipe.prepTime) || recipe.prepTime < 0) return false;
   if (!isNumber(recipe.cookTime) || recipe.cookTime < 0) return false;
   if (!isNumber(recipe.servings) || recipe.servings < 1) return false;
-  if (!isNumber(recipe.difficulty) || recipe.difficulty < 1 || recipe.difficulty > 5) return false;
+  if (
+    !isNumber(recipe.difficulty) ||
+    recipe.difficulty < 1 ||
+    recipe.difficulty > 5
+  )
+    return false;
   if (!isNumber(recipe.categoryId)) return false;
   if (recipe.tags !== undefined && !Array.isArray(recipe.tags)) return false;
   if (!Array.isArray(recipe.ingredients)) return false;
   if (!Array.isArray(recipe.steps)) return false;
   return true;
+}
+
+// MODIF
+// == TokenPayload ==
+export function isTokenPayload(obj: any): obj is TokenPayload {
+  return (
+    obj &&
+    typeof obj.id === "number" &&
+    typeof obj.email === "string" &&
+    typeof obj.role === "string" &&
+    (obj.role === "user" || obj.role === "admin")
+  );
 }

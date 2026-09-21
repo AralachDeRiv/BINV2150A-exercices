@@ -10,6 +10,7 @@ export interface AuthenticatedRequest extends Request {
 }
 
 // MODIF
+// A voir en fonction de si veut ajouter d'autres roles dans le futur => enum
 export interface TokenPayload {
   id: number;
   email: string;
