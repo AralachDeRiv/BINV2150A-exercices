@@ -19,7 +19,9 @@ export const validateFakeToken = (token: string): string => {
   return Buffer.from(token, "base64").toString("utf-8");
 };
 
-// MODIF
+/*************************************/
+/*         Solution Seance 03        */
+/*************************************/
 /**
  * Génère le token d'auth avec jsonwebtoken
  */

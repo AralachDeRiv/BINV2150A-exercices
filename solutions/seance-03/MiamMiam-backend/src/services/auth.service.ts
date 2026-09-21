@@ -15,7 +15,9 @@ export class AuthService {
     if (!user) return undefined;
     if (user.password !== password) return undefined;
 
-    // MODIF
+    /*************************************/
+    /*         Solution Seance 03        */
+    /*************************************/
     return generateToken({
       id: user.id,
       email: user.email,
@@ -38,7 +40,9 @@ export class AuthService {
       return res.sendStatus(401);
     }
 
-    // MODIF
+    /*************************************/
+    /*         Solution Seance 03        */
+    /*************************************/
     const payload = verifyToken(token);
     if (!payload) return res.sendStatus(401);
     req.user = payload;
