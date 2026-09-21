@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { ERole, User } from "./user.model";
+import { ERole } from "./user.model";
 
 /**
  * Requête Express enrichie par le middleware AuthService.authorize :

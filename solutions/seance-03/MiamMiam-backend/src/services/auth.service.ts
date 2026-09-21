@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "../models/auth.model";
-import { ERole, User } from "../models/user.model";
-import { generateToken, validateFakeToken, verifyToken } from "../utils/auth";
+import { ERole } from "../models/user.model";
+import { generateToken, verifyToken } from "../utils/auth";
 import { LoggerService } from "./logger.service";
 import { UsersService } from "./users.service";
 
