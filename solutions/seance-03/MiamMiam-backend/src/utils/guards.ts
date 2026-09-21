@@ -69,7 +69,9 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   return true;
 }
 
-// MODIF
+/*************************************/
+/*         Solution Seance 03        */
+/*************************************/
 // == TokenPayload ==
 export function isTokenPayload(obj: any): obj is TokenPayload {
   const roles = Object.values(ERole);

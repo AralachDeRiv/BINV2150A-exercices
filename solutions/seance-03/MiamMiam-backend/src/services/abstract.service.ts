@@ -23,7 +23,10 @@ export abstract class AbstractService {
     return items;
   }
 
-  protected static writeDB<From, ToWrite>(items: From[], mapper: (item: From) => ToWrite): boolean {
+  protected static writeDB<From, ToWrite>(
+    items: From[],
+    mapper: (item: From) => ToWrite,
+  ): boolean {
     const dbos: ToWrite[] = [];
     for (const item of items) {
       dbos.push(mapper(item));

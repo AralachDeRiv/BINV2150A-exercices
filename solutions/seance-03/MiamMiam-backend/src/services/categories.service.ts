@@ -6,7 +6,9 @@ export class CategoriesService extends AbstractService {
   protected static dbPath: string = "data/categories.json";
 
   private static readCategoriesDB(): Category[] {
-    return CategoriesService.readDB<CategoryDBO, Category>(CategoriesMapper.fromDBO);
+    return CategoriesService.readDB<CategoryDBO, Category>(
+      CategoriesMapper.fromDBO,
+    );
   }
 
   /**

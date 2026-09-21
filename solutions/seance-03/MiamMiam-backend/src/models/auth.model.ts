@@ -6,11 +6,15 @@ import { ERole } from "./user.model";
  * après ce middleware, req.user contient l'utilisateur authentifié.
  */
 export interface AuthenticatedRequest extends Request {
-  // MODIF
+  /*************************************/
+  /*         Solution Seance 03        */
+  /*************************************/
   user?: TokenPayload;
 }
 
-// MODIF
+/*************************************/
+/*         Solution Seance 03        */
+/*************************************/
 // A voir en fonction de si veut ajouter d'autres roles dans le futur => enum
 export interface TokenPayload {
   id: number;

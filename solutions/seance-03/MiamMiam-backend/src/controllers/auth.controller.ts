@@ -31,7 +31,9 @@ authController.post("/register", (req: Request, res: Response) => {
   return res.status(201).json(tokenDTO);
 });
 
-// MODIF
+/*************************************/
+/*         Solution Seance 03        */
+/*************************************/
 /**
  * POST /auth/login
  * Vérifie les identifiants et renvoie un token
@@ -69,7 +71,9 @@ authController.get(
 
     if (!req.user) return res.sendStatus(401);
     const user = req.user;
-    // MODIF
+    /*************************************/
+    /*         Solution Seance 03        */
+    /*************************************/
     const userDTO: UserDTO = UsersMapper.toDTO(UsersService.getById(user.id)!);
     return res.status(200).json(userDTO);
   },
