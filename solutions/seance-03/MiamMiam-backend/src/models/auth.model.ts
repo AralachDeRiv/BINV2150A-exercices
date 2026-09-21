@@ -8,3 +8,10 @@ import { User } from "./user.model";
 export interface AuthenticatedRequest extends Request {
   user?: User;
 }
+
+// MODIF
+export interface TokenPayload {
+  id: number;
+  email: string;
+  role: "user" | "admin";
+}
