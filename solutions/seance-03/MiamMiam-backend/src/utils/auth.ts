@@ -1,5 +1,6 @@
 import * as jwt from "jsonwebtoken";
 import { TokenPayload } from "../models/auth.model";
+import { LoggerService } from "../services/logger.service";
 
 /**
  * "Fake token" : un simple encodage Base64 de l'email de l'utilisateur.
@@ -36,6 +37,7 @@ export function verifyToken(token: string): TokenPayload | null {
   try {
     return jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
   } catch (error) {
+    LoggerService.error("Token invalide : " + error);
     return null;
   }
 }
