@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "../models/auth.model";
 import { ERole, User } from "../models/user.model";
-import { generateFakeToken, validateFakeToken } from "../utils/auth";
+import { generateToken, validateFakeToken, verifyToken } from "../utils/auth";
 import { LoggerService } from "./logger.service";
 import { UsersService } from "./users.service";
 
@@ -15,34 +15,33 @@ export class AuthService {
     if (!user) return undefined;
     if (user.password !== password) return undefined;
 
-    return generateFakeToken(user.email);
+    // MODIF
+    return generateToken({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
   }
 
   /**
    * Middleware : vérifie le token du header Authorization et place l'utilisateur dans req.user.
    * Répond 401 si le token est absent ou invalide.
    */
-  static authorize(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  static authorize(
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+  ) {
     const token = req.get("Authorization");
     if (!token) {
       LoggerService.error("Missing Authorization header");
       return res.sendStatus(401);
     }
 
-    let user: User | undefined = undefined;
-    try {
-      const email = validateFakeToken(token);
-      user = UsersService.getByEmail(email);
-    } catch (error) {
-      LoggerService.error(error);
-    }
-
-    if (!user) {
-      LoggerService.error("Invalid token");
-      return res.sendStatus(401);
-    }
-
-    req.user = user; // disponible dans les middlewares et routes suivants
+    // MODIF
+    const payload = verifyToken(token);
+    if (!payload) return res.sendStatus(401);
+    req.user = payload;
     return next();
   }
 

@@ -1,6 +1,6 @@
 import { TokenPayload } from "../models/auth.model";
 import { NewRecipeDTO } from "../models/recipe.model";
-import { CredentialsDTO, NewUserDTO } from "../models/user.model";
+import { CredentialsDTO, ERole, NewUserDTO } from "../models/user.model";
 
 /**
  * Type guards : fonctions qui vérifient à l'exécution qu'une valeur inconnue
@@ -72,11 +72,12 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
 // MODIF
 // == TokenPayload ==
 export function isTokenPayload(obj: any): obj is TokenPayload {
+  const roles = Object.values(ERole);
   return (
     obj &&
     typeof obj.id === "number" &&
     typeof obj.email === "string" &&
     typeof obj.role === "string" &&
-    (obj.role === "user" || obj.role === "admin")
+    roles.includes(obj.role)
   );
 }
