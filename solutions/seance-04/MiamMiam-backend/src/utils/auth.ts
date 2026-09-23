@@ -1,4 +1,5 @@
 import * as jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import { TokenPayload } from "../models/auth.model";
 import { LoggerService } from "../services/logger.service";
 
@@ -42,4 +43,22 @@ export function verifyToken(token: string): TokenPayload | null {
     LoggerService.error("Token invalide : " + error);
     return null;
   }
+}
+
+/*************************************/
+/*         Solution Seance 04        */
+/*************************************/
+async function hashPassword(plainPassword: string): Promise<string> {
+  try {
+    return await bcrypt.hash(plainPassword, 10);
+  } catch (error) {
+    throw new Error("Erreur lors du hachage");
+  }
+}
+
+async function verifyPassword(
+  plainPassword: string,
+  storedHash: string,
+): Promise<boolean> {
+  return await bcrypt.compare(plainPassword, storedHash);
 }
