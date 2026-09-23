@@ -36,7 +36,9 @@ authController.post("/register", async (req: Request, res: Response) => {
   const user = UsersService.create(newUser);
   if (!user) return res.sendStatus(409); // email déjà utilisé
 
-  const token = await AuthService.login(user.email, user.password);
+  // Attention, ici on a besoin du pwd non hashé
+  const token = await AuthService.login(user.email, password);
+
   if (!token) return res.sendStatus(500);
 
   const tokenDTO: TokenDTO = { token: token };

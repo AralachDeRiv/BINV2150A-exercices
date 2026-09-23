@@ -62,7 +62,7 @@ export class UsersService extends AbstractService {
     const user: User = {
       id: UsersService.getNextId(users),
       email: newUser.email,
-      password: newUser.password, // stocké tel quel... pour l'instant
+      password: newUser.password,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       role: ERole.USER,
