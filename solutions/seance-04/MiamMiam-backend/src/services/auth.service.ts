@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { AuthenticatedRequest } from "../models/auth.model";
 import { ERole } from "../models/user.model";
-import { generateToken, verifyToken } from "../utils/auth";
+import { generateToken, verifyPassword, verifyToken } from "../utils/auth";
 import { LoggerService } from "./logger.service";
 import { UsersService } from "./users.service";
 
@@ -10,10 +10,16 @@ export class AuthService {
    * Vérifie les identifiants.
    * @returns un token si l'email et le mot de passe sont corrects, undefined sinon
    */
-  static login(email: string, password: string): string | undefined {
+  static async login(
+    email: string,
+    password: string,
+  ): Promise<string | undefined> {
+    /*************************************/
+    /*         Solution Seance 04        */
+    /*************************************/
     const user = UsersService.getByEmail(email);
     if (!user) return undefined;
-    if (user.password !== password) return undefined;
+    if (!(await verifyPassword(password, user.password))) return undefined;
 
     /*************************************/
     /*         Solution Seance 03        */

@@ -48,7 +48,7 @@ export function verifyToken(token: string): TokenPayload | null {
 /*************************************/
 /*         Solution Seance 04        */
 /*************************************/
-async function hashPassword(plainPassword: string): Promise<string> {
+export async function hashPassword(plainPassword: string): Promise<string> {
   try {
     return await bcrypt.hash(plainPassword, 10);
   } catch (error) {
@@ -56,7 +56,7 @@ async function hashPassword(plainPassword: string): Promise<string> {
   }
 }
 
-async function verifyPassword(
+export async function verifyPassword(
   plainPassword: string,
   storedHash: string,
 ): Promise<boolean> {
