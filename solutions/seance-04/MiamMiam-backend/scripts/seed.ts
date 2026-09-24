@@ -1,4 +1,5 @@
 import fs from "fs";
+import bcrypt from "bcrypt";
 
 /**
  * Données de démonstration, au format DBO (celui des fichiers JSON).
@@ -7,50 +8,43 @@ import fs from "fs";
 
 const NOW = "2026-09-01T08:00:00.000Z";
 
-// --- Users (UserDBO) --- mots de passe en clair, pour l'instant...
-const users = [
+// --- Categories (CategoryDBO) ---
+const categories = [
   {
     id: 1,
-    email: "admin@miammiam.be",
-    password: "admin",
-    first_name: "Admin",
-    last_name: "MiamMiam",
-    role: "admin",
-    favorites: [1, 4],
+    name: "Entrée",
+    description: "Pour ouvrir l'appétit",
     created_at: NOW,
     updated_at: NOW,
   },
   {
     id: 2,
-    email: "alice@vinci.be",
-    password: "alice",
-    first_name: "Alice",
-    last_name: "Dupont",
-    role: "user",
-    favorites: [3],
+    name: "Plat",
+    description: "Le cœur du repas",
     created_at: NOW,
     updated_at: NOW,
   },
   {
     id: 3,
-    email: "bob@vinci.be",
-    password: "bob",
-    first_name: "Bob",
-    last_name: "Martin",
-    role: "user",
-    favorites: [],
+    name: "Dessert",
+    description: "La touche sucrée",
     created_at: NOW,
     updated_at: NOW,
   },
-];
-
-// --- Categories (CategoryDBO) ---
-const categories = [
-  { id: 1, name: "Entrée", description: "Pour ouvrir l'appétit", created_at: NOW, updated_at: NOW },
-  { id: 2, name: "Plat", description: "Le cœur du repas", created_at: NOW, updated_at: NOW },
-  { id: 3, name: "Dessert", description: "La touche sucrée", created_at: NOW, updated_at: NOW },
-  { id: 4, name: "Boisson", description: "Cocktails, smoothies et autres", created_at: NOW, updated_at: NOW },
-  { id: 5, name: "Apéro", description: "À grignoter entre amis", created_at: NOW, updated_at: NOW },
+  {
+    id: 4,
+    name: "Boisson",
+    description: "Cocktails, smoothies et autres",
+    created_at: NOW,
+    updated_at: NOW,
+  },
+  {
+    id: 5,
+    name: "Apéro",
+    description: "À grignoter entre amis",
+    created_at: NOW,
+    updated_at: NOW,
+  },
 ];
 
 // --- Recipes (RecipeDBO) ---
@@ -59,7 +53,8 @@ const recipes = [
     id: 1,
     title: "Pancakes moelleux",
     description: "Des pancakes épais et aérés pour un brunch réussi.",
-    image_url: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
     prep_time: 10,
     cook_time: 15,
     servings: 4,
@@ -87,8 +82,10 @@ const recipes = [
   {
     id: 2,
     title: "Spaghetti carbonara",
-    description: "La vraie carbonara : guanciale, pecorino, oeufs et poivre. Pas de crème !",
-    image_url: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
+    description:
+      "La vraie carbonara : guanciale, pecorino, oeufs et poivre. Pas de crème !",
+    image_url:
+      "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
     prep_time: 10,
     cook_time: 15,
     servings: 2,
@@ -116,7 +113,8 @@ const recipes = [
     id: 3,
     title: "Soupe de potiron",
     description: "Un velouté d'automne tout doux, parfait avec des croûtons.",
-    image_url: "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800",
     prep_time: 15,
     cook_time: 30,
     servings: 4,
@@ -143,8 +141,10 @@ const recipes = [
   {
     id: 4,
     title: "Mousse au chocolat",
-    description: "Trois ingrédients, un résultat bluffant. À préparer la veille.",
-    image_url: "https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=800",
+    description:
+      "Trois ingrédients, un résultat bluffant. À préparer la veille.",
+    image_url:
+      "https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=800",
     prep_time: 20,
     cook_time: 0,
     servings: 6,
@@ -170,7 +170,8 @@ const recipes = [
     id: 5,
     title: "Poulet au curry et lait de coco",
     description: "Un curry doux et parfumé, prêt en moins de 40 minutes.",
-    image_url: "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800",
     prep_time: 15,
     cook_time: 25,
     servings: 4,
@@ -198,7 +199,8 @@ const recipes = [
     id: 6,
     title: "Guacamole",
     description: "Frais, crémeux, à tartiner ou à tremper.",
-    image_url: "https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800",
     prep_time: 10,
     cook_time: 0,
     servings: 4,
@@ -225,7 +227,8 @@ const recipes = [
     id: 7,
     title: "Smoothie banane-fraise",
     description: "Le petit-déjeuner à emporter.",
-    image_url: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=800",
     prep_time: 5,
     cook_time: 0,
     servings: 2,
@@ -247,7 +250,8 @@ const recipes = [
     id: 8,
     title: "Boeuf bourguignon",
     description: "Le classique du dimanche, qui mijote longtemps.",
-    image_url: "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800",
+    image_url:
+      "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800",
     prep_time: 30,
     cook_time: 180,
     servings: 6,
@@ -274,7 +278,44 @@ const recipes = [
   },
 ];
 
-export function seed(): void {
+export async function seed(): Promise<void> {
+  // --- Users (UserDBO) --- mots de passe en clair, pour l'instant...
+  const users = [
+    {
+      id: 1,
+      email: "admin@miammiam.be",
+      password: await bcrypt.hash("admin", 10),
+      first_name: "Admin",
+      last_name: "MiamMiam",
+      role: "admin",
+      favorites: [1, 4],
+      created_at: NOW,
+      updated_at: NOW,
+    },
+    {
+      id: 2,
+      email: "alice@vinci.be",
+      password: await bcrypt.hash("alice", 10),
+      first_name: "Alice",
+      last_name: "Dupont",
+      role: "user",
+      favorites: [3],
+      created_at: NOW,
+      updated_at: NOW,
+    },
+    {
+      id: 3,
+      email: "bob@vinci.be",
+      password: await bcrypt.hash("bob", 10),
+      first_name: "Bob",
+      last_name: "Martin",
+      role: "user",
+      favorites: [],
+      created_at: NOW,
+      updated_at: NOW,
+    },
+  ];
+
   if (!fs.existsSync("data")) {
     fs.mkdirSync("data");
   }
@@ -282,10 +323,18 @@ export function seed(): void {
   fs.writeFileSync("data/users.json", JSON.stringify(users, null, 2), "utf-8");
   console.log(`Seeded: data/users.json (${users.length} users)`);
 
-  fs.writeFileSync("data/categories.json", JSON.stringify(categories, null, 2), "utf-8");
+  fs.writeFileSync(
+    "data/categories.json",
+    JSON.stringify(categories, null, 2),
+    "utf-8",
+  );
   console.log(`Seeded: data/categories.json (${categories.length} categories)`);
 
-  fs.writeFileSync("data/recipes.json", JSON.stringify(recipes, null, 2), "utf-8");
+  fs.writeFileSync(
+    "data/recipes.json",
+    JSON.stringify(recipes, null, 2),
+    "utf-8",
+  );
   console.log(`Seeded: data/recipes.json (${recipes.length} recipes)`);
 
   console.log("");
