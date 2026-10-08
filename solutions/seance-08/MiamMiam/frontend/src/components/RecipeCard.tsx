@@ -1,16 +1,18 @@
-const recipe = {
-title: "Pâtes Carbonara",
-imageUrl: "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
-duration: 20,
-difficulty: "Facile",
-};
+export interface RecipeCardProps{
+    title : string,
+    imageUrl: string,
+    duration: number,
+    difficulty: string,
+    description?: string
+}
 
 
-export const RecipeCard = () => {
+export const RecipeCard = ({title, imageUrl, duration, difficulty, description} : RecipeCardProps) => {
     return <>
-        <h2>{recipe.title}</h2>
-        <img src={recipe.imageUrl} alt="recipe img" />
-        <p>{recipe.duration}</p>
-        <p>{recipe.difficulty}</p>
+        <h2>{title}</h2>
+        <img src={imageUrl} alt="recipe img" />
+        {description && <p>{description}</p>}
+        <p>{duration}</p>
+        <p>{difficulty}</p>
     </>
 }
