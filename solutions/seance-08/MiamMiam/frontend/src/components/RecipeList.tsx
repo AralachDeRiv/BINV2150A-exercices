@@ -34,8 +34,8 @@ const recipes: RecipeCardProps[] = [
 export const RecipeList = () => {
     return (
         <>
-        {recipes.map((r) => (
-            <RecipeCard {...r}/>
+        {recipes.map((r, i) => (
+            <RecipeCard key={i} {...r}/>
         ))}
         </>
     )
