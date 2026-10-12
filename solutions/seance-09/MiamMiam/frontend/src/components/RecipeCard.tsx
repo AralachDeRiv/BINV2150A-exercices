@@ -7,6 +7,7 @@ import {
   Rating,
   Button,
   Stack,
+  Chip,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
@@ -16,6 +17,7 @@ export interface RecipeCardProps {
   duration: number;
   difficulty: number;
   description?: string;
+  category?: string;
 }
 
 // 6. Réécrivez RecipeCard avec Card , CardMedia , CardContent , CardActions et Typography
@@ -25,19 +27,19 @@ export const RecipeCard = ({
   duration,
   difficulty,
   description,
+  category,
 }: RecipeCardProps) => {
   return (
     <Card sx={{ maxWidth: 500 }}>
       <CardMedia component="img" src={imageUrl}></CardMedia>
       <CardContent>
-        <Typography
-          variant="h5"
-          component={"h2"}
-          color="primary"
-          sx={{ mb: 3 }}
-        >
-          {title}
-        </Typography>
+        <Stack direction={"row"} sx={{ mb: 3 }} spacing={3}>
+          <Typography variant="h5" component={"h2"} color="primary">
+            {title}
+          </Typography>
+
+          {category && <Chip variant="outlined" label={category}></Chip>}
+        </Stack>
 
         {description && (
           <Typography component={"p"} sx={{ mb: 2 }}>

@@ -8,6 +8,7 @@ const recipe: RecipeCardProps = {
   duration: 30,
   difficulty: 4,
   description: "Une super recette de pates",
+  category: "dinner",
 };
 
 const App = () => {
