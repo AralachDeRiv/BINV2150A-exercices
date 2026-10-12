@@ -1,5 +1,6 @@
-import { CssBaseline, createTheme, ThemeProvider, Stack } from "@mui/material";
+import { Stack, Container } from "@mui/material";
 import { RecipeCard, type RecipeCardProps } from "./components/RecipeCard";
+import miamiam from "./assets/miammiam.png";
 
 const recipe: RecipeCardProps = {
   title: "Pate",
@@ -13,10 +14,18 @@ const recipe: RecipeCardProps = {
 
 const App = () => {
   return (
-    <Stack spacing={1} sx={{ p: 2 }}>
-      <RecipeCard {...recipe} />
-      <RecipeCard title="test" imageUrl="" duration={10} difficulty={6} />
-    </Stack>
+    <>
+      <Container sx={{ p: 5 }}>
+        <Container>
+          <img src={miamiam} alt="miamiam.png" />
+        </Container>
+
+        <Stack spacing={1} sx={{ p: 2 }}>
+          <RecipeCard {...recipe} />
+          <RecipeCard title="test" imageUrl="" duration={10} difficulty={6} />
+        </Stack>
+      </Container>
+    </>
   );
 };
 export default App;
