@@ -1,6 +1,8 @@
 import { Stack, Container } from "@mui/material";
 import { RecipeCard, type RecipeCardProps } from "./components/RecipeCard";
 import miamiam from "./assets/miammiam.png";
+import { RecipeList } from "./components/RecipeList";
+import { PageLayout } from "./components/PageLayout";
 
 const recipe: RecipeCardProps = {
   title: "Pate",
@@ -15,16 +17,23 @@ const recipe: RecipeCardProps = {
 const App = () => {
   return (
     <>
-      <Container sx={{ p: 5 }}>
+      <PageLayout>
         <Container>
-          <img src={miamiam} alt="miamiam.png" />
+          <img
+            style={{
+              objectFit: "cover",
+              width: "100%",
+              height: "100%",
+            }}
+            src={miamiam}
+            alt="miamiam.png"
+          />
         </Container>
 
-        <Stack spacing={1} sx={{ p: 2 }}>
-          <RecipeCard {...recipe} />
-          <RecipeCard title="test" imageUrl="" duration={10} difficulty={6} />
-        </Stack>
-      </Container>
+        <Container>
+          <RecipeList />
+        </Container>
+      </PageLayout>
     </>
   );
 };

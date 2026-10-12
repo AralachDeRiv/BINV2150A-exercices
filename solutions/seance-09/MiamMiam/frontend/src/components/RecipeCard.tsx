@@ -30,7 +30,7 @@ export const RecipeCard = ({
   category,
 }: RecipeCardProps) => {
   return (
-    <Card sx={{ maxWidth: 500 }}>
+    <Card sx={{ maxWidth: 400 }}>
       <CardMedia component="img" src={imageUrl}></CardMedia>
       <CardContent>
         <Stack direction={"row"} sx={{ mb: 3 }} spacing={3}>
