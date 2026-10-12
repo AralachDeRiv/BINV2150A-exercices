@@ -14,19 +14,6 @@ const recipes: RecipeCardProps[] = [
         duration: 45,
         difficulty: "Moyen",
         description: "Un poulet parfumé accompagné d'une sauce au curry."
-    },
-    {
-        title: "Tarte aux pommes",
-        imageUrl: "/images/tarte-pommes.jpg",
-        duration: 60,
-        difficulty: "Facile",
-        description: "Une tarte aux pommes maison, simple et gourmande."
-    },
-    {
-        title: "Risotto aux champignons",
-        imageUrl: "/images/risotto.jpg",
-        duration: 40,
-        difficulty: "Moyen"
     }
 ];
 
@@ -34,6 +21,9 @@ const recipes: RecipeCardProps[] = [
 export const RecipeList = () => {
     return (
         <>
+        {/**
+         * Une boucle de RecipeCard
+        */}
         {recipes.map((r, i) => (
             <RecipeCard key={i} {...r}/>
         ))}
