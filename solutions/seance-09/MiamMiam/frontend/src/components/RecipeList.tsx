@@ -1,4 +1,4 @@
-import { Stack, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { RecipeCard, type RecipeCardProps } from "./RecipeCard";
 
 const recipes: RecipeCardProps[] = [

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { AppBar, Toolbar, Container, Stack, Typography } from "@mui/material";
+import { AppBar, Toolbar, Container, Typography } from "@mui/material";
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu";
 
 interface PageLayoutProps {
