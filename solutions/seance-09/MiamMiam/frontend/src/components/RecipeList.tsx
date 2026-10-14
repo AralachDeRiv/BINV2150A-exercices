@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Stack, Grid } from "@mui/material";
 import { RecipeCard, type RecipeCardProps } from "./RecipeCard";
 
 const recipes: RecipeCardProps[] = [
@@ -36,21 +36,45 @@ const recipes: RecipeCardProps[] = [
     description: "Une super recette de pates",
     category: "dinner",
   },
+  {
+    title: "Pate",
+    imageUrl:
+      "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
+    duration: 30,
+    difficulty: 4,
+    description: "Une super recette de pates",
+    category: "dinner",
+  },
+  {
+    title: "Pate",
+    imageUrl:
+      "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
+    duration: 30,
+    difficulty: 4,
+    description: "Une super recette de pates",
+    category: "dinner",
+  },
+  {
+    title: "Pate",
+    imageUrl:
+      "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
+    duration: 30,
+    difficulty: 4,
+    description: "Une super recette de pates",
+    category: "dinner",
+  },
 ];
 
 export const RecipeList = () => {
   return (
     <>
-      <Stack
-        direction={"row"}
-        spacing={2}
-        useFlexGap
-        sx={{ flexWrap: "wrap", display: "flex", justifyContent: "center" }}
-      >
+      <Grid container spacing={2}>
         {recipes.map((r, i) => (
-          <RecipeCard key={i} {...r} />
+          <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <RecipeCard key={i} {...r} />
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </>
   );
 };
