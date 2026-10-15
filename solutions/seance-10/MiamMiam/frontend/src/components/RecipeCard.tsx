@@ -15,6 +15,7 @@ import type { Recipe } from "../models/recipe";
 import { categories } from "../data/categories";
 import { RecipeDetail } from "./RecipeDetail";
 import { useState } from "react";
+import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
 
 export const RecipeCard = (recipe: Recipe) => {
   const [open, setOpen] = useState(false);
@@ -62,13 +63,19 @@ export const RecipeCard = (recipe: Recipe) => {
           <Typography component={"p"}>{recipe.prepTime}</Typography>
         </Stack>
 
-        <Stack direction={"row"} spacing={2}>
+        <Stack direction={"row"} spacing={2} sx={{ mb: 2 }}>
           {recipe.tags.map((t) => (
             <Chip key={t} variant="filled" label={t}></Chip>
           ))}
         </Stack>
 
-        <Rating value={recipe.difficulty} max={5} readOnly />
+        <Rating
+          icon={<SoupKitchenIcon />}
+          emptyIcon={<SoupKitchenIcon />}
+          value={recipe.difficulty}
+          max={5}
+          readOnly
+        />
       </CardContent>
       <CardActions>
         <Button variant="contained" onClick={handleOpen}>
