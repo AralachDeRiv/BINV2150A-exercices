@@ -10,49 +10,54 @@ import {
   Chip,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import type { Recipe } from "../models/recipe";
+import { categories } from "../data/categories";
 
-export interface RecipeCardProps {
-  title: string;
-  imageUrl: string;
-  duration: number;
-  difficulty: number;
-  description?: string;
-  category?: string;
-}
-
-// 6. Réécrivez RecipeCard avec Card , CardMedia , CardContent , CardActions et Typography
-export const RecipeCard = ({
-  title,
-  imageUrl,
-  duration,
-  difficulty,
-  description,
-  category,
-}: RecipeCardProps) => {
+export const RecipeCard = (recipe: Recipe) => {
   return (
-    <Card sx={{ maxWidth: 400 }}>
-      <CardMedia component="img" src={imageUrl}></CardMedia>
+    <Card sx={{ justifyContent: "space-between", height: "100%" }}>
+      <CardMedia
+        component="img"
+        src={recipe.imageUrl}
+        sx={{ height: 200, width: "100%", objectFit: "cover" }}
+      ></CardMedia>
       <CardContent>
         <Stack direction={"row"} sx={{ mb: 3 }} spacing={3}>
-          <Typography variant="h5" component={"h2"} color="primary">
-            {title}
+          <Typography
+            variant="h6"
+            component={"h2"}
+            color="primary"
+            sx={{ textWrap: "nowrap", overflow: "hidden" }}
+          >
+            {recipe.title}
           </Typography>
 
-          {category && <Chip variant="outlined" label={category}></Chip>}
+          {recipe.categoryId && (
+            <Chip
+              variant="outlined"
+              label={categories.find((c) => c.id === recipe.categoryId)?.name}
+            ></Chip>
+          )}
         </Stack>
 
-        {description && (
+        {recipe.description && (
           <Typography component={"p"} sx={{ mb: 2 }}>
-            {description}
+            {recipe.description}
           </Typography>
         )}
 
         <Stack spacing={2} direction={"row"} sx={{ mb: 1 }}>
           <AccessTimeIcon />
-          <Typography component={"p"}>{duration}</Typography>
+          <Typography component={"p"}>{recipe.prepTime}</Typography>
         </Stack>
 
-        <Rating value={difficulty} max={10} readOnly />
+        <Stack direction={"row"} spacing={2}>
+          {recipe.tags.map((t) => (
+            <Chip key={t} variant="filled" label={t}></Chip>
+          ))}
+        </Stack>
+
+        <Rating value={recipe.difficulty} max={5} readOnly />
       </CardContent>
       <CardActions>
         <Button variant="contained">CLICK</Button>
