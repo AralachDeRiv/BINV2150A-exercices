@@ -1,8 +1,10 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { RecipeCard } from "./RecipeCard";
 import { recipes } from "../data/recipes";
 
 export const RecipeList = () => {
+  if (recipes.length == 0) return <Typography>NO</Typography>;
+
   return (
     <>
       <Grid container spacing={2}>
