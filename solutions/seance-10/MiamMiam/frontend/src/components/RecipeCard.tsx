@@ -23,11 +23,22 @@ export const RecipeCard = (recipe: Recipe) => {
   const handleClose = () => setOpen(false);
 
   return (
-    <Card sx={{ justifyContent: "space-between", height: "100%" }}>
+    <Card
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        height: "100%",
+      }}
+    >
       <CardMedia
         component="img"
         src={recipe.imageUrl}
-        sx={{ height: 200, width: "100%", objectFit: "cover" }}
+        sx={{
+          height: 200,
+          width: "100%",
+          objectFit: "cover",
+        }}
       ></CardMedia>
       <CardContent>
         <Stack direction={"row"} sx={{ mb: 3 }} spacing={3}>
