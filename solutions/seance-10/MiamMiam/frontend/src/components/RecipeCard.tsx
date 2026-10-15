@@ -8,12 +8,19 @@ import {
   Button,
   Stack,
   Chip,
+  Modal,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import type { Recipe } from "../models/recipe";
 import { categories } from "../data/categories";
+import { RecipeDetail } from "./RecipeDetail";
+import { useState } from "react";
 
 export const RecipeCard = (recipe: Recipe) => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Card sx={{ justifyContent: "space-between", height: "100%" }}>
       <CardMedia
@@ -27,7 +34,11 @@ export const RecipeCard = (recipe: Recipe) => {
             variant="h6"
             component={"h2"}
             color="primary"
-            sx={{ textWrap: "nowrap", overflow: "hidden" }}
+            sx={{
+              textWrap: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
           >
             {recipe.title}
           </Typography>
@@ -60,7 +71,21 @@ export const RecipeCard = (recipe: Recipe) => {
         <Rating value={recipe.difficulty} max={5} readOnly />
       </CardContent>
       <CardActions>
-        <Button variant="contained">CLICK</Button>
+        <Button variant="contained" onClick={handleOpen}>
+          CLICK
+        </Button>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          sx={{
+            display: "flex",
+            backdropFilter: "hue-rotate(160deg)",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <RecipeDetail {...recipe} />
+        </Modal>
       </CardActions>
     </Card>
   );

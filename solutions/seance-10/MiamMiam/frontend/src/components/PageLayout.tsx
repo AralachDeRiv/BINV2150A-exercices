@@ -13,6 +13,7 @@ export const PageLayout = ({ children }: PageLayoutProps) => {
         <RestaurantMenuIcon />
       </AppBar>
       <Container sx={{ p: 5, mt: 7 }}>{children}</Container>
+
       <Toolbar
         variant="regular"
         sx={{ display: "flex", justifyContent: "center" }}
