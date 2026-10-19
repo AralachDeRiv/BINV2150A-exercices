@@ -9,6 +9,7 @@ import {
   Stack,
   Chip,
   Modal,
+  IconButton,
 } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import type { Recipe } from "../models/recipe";
@@ -16,9 +17,13 @@ import { categories } from "../data/categories";
 import { RecipeDetail } from "./RecipeDetail";
 import { useState } from "react";
 import SoupKitchenIcon from "@mui/icons-material/SoupKitchen";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export const RecipeCard = (recipe: Recipe) => {
   const [open, setOpen] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -89,9 +94,29 @@ export const RecipeCard = (recipe: Recipe) => {
         />
       </CardContent>
       <CardActions>
-        <Button variant="contained" onClick={handleOpen}>
-          CLICK
-        </Button>
+        <Stack
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Button variant="contained" onClick={handleOpen}>
+            MODAL
+          </Button>
+
+          <IconButton
+            color="primary"
+            aria-label={
+              isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"
+            }
+            onClick={() => setIsFavorite((prev) => !prev)}
+          >
+            {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          </IconButton>
+        </Stack>
+
         <Modal
           open={open}
           onClose={handleClose}
